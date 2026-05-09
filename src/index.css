@@ -1,0 +1,33 @@
+:root {
+  --bg: #ecdfcc;
+  --text: #2b2b2b;
+  --subtext: #6b5e57;
+  --accent: #e5989b;
+  --card: #ffffff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: serif;
+  background: var(--bg);
+  background-image: radial-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--text); /* main text */
+  overflow-x: hidden;
+}
+
+img,
+video {
+  max-width: 100%;
+}
