@@ -80,7 +80,7 @@ export default function WhoSheIs() {
           transition={{ duration: 0.5 }}
           style={cardStyle}
         >
-          <video src="/black.MOV" autoPlay muted loop style={mediaStyle} />
+          <video src="/black.MOV" autoPlay playsInline muted loop style={mediaStyle} />
         </motion.div>
 
         {/* TEXT 1 */}
@@ -171,7 +171,7 @@ export default function WhoSheIs() {
           transition={{ duration: 0.5 }}
           style={cardStyle}
         >
-          <video src="/sleeveless.MP4" autoPlay muted loop style={mediaStyle} />
+          <video src="/sleeveless.MP4" autoPlay playsInline muted loop style={mediaStyle} />
         </motion.div>
 
         {/* CARD 3 */}
@@ -184,7 +184,7 @@ export default function WhoSheIs() {
         >
           <video
             src="/blackwhite.MOV"
-            autoPlay muted loop
+            autoPlay playsInline muted loop
             style={{ ...mediaStyle, objectPosition: "90% 15%", objectFit: "fill" }}
           />
         </motion.div>
