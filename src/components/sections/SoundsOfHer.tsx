@@ -1,5 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+
+declare global {
+  interface Window {
+    YT: any;
+    onYouTubeIframeAPIReady: () => void;
+  }
+}
 
 // const COLORS = ["#e5989b", "#d4849a", "#f2b5a0", "#e8a0bf"];
 
@@ -22,7 +29,7 @@ const songs = [
     color: "#d4849a",
     image: null,
     videoId: "LJA_g-_xlCs",
-    startTime: ""
+    startTime: 0
   },
   {
     id: 3,
@@ -262,20 +269,65 @@ function VinylRecord({
           {song.duration}
         </p>
       </div>
-
-        {isPlaying && song.videoId && (
-    <iframe
-      src={`https://www.youtube.com/embed/${song.videoId}?autoplay=1&controls=0&start=${song.startTime ?? 0}`}
-      style={{ display: "none" }}
-      allow="autoplay"
-    />
-  )}
+      {/* ← iframe removed from here */}
     </motion.div>
   );
 }
 
 export default function SoundsOfHer() {
   const [playing, setPlaying] = useState<number | null>(null);
+  const playerRef = useRef<any>(null);
+  const playerDivId = "yt-player";
+
+  // Load YT script once
+  useEffect(() => {
+    if (!document.getElementById("yt-script")) {
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      tag.id = "yt-script";
+      document.body.appendChild(tag);
+    }
+  }, []);
+
+  // React to playing state changes
+  useEffect(() => {
+    if (playing === null) {
+      playerRef.current?.stopVideo();
+      return;
+    }
+
+    const song = songs.find((s) => s.id === playing);
+    if (!song) return;
+
+    const initPlayer = () => {
+      if (playerRef.current) {
+        playerRef.current.loadVideoById({
+          videoId: song.videoId,
+          startSeconds: song.startTime || 0,
+        });
+      } else {
+        playerRef.current = new window.YT.Player(playerDivId, {
+          height: "0",
+          width: "0",
+          videoId: song.videoId,
+          playerVars: {
+            autoplay: 1,
+            start: song.startTime || 0,
+            controls: 0,
+          },
+          events: {
+            onReady: (e: any) => e.target.playVideo(),
+          },
+        });
+      }
+    };
+
+    if (window.YT?.Player) {
+      initPlayer();
+    } else {
+      window.onYouTubeIframeAPIReady = initPlayer;
+    }
+  }, [playing]);
 
   const toggle = (id: number) => {
     setPlaying((prev) => (prev === id ? null : id));
@@ -295,6 +347,9 @@ export default function SoundsOfHer() {
         overflow: "hidden",
       }}
     >
+      {/* Hidden YT player mount point */}
+      <div id={playerDivId} style={{ display: "none" }} />
+
       {/* Faint background rings */}
       {[280, 420, 560].map((size, i) => (
         <div
@@ -356,7 +411,7 @@ export default function SoundsOfHer() {
             margin: "12px 0 0 0",
           }}
         >
-          let's hear some of her favorite music 
+          let's hear some of her favorite music
         </p>
         <div
           style={{
@@ -407,16 +462,16 @@ export default function SoundsOfHer() {
         ))}
       </div>
       <p
-          style={{
-            fontFamily: "'Georgia', serif",
-            fontStyle: "italic",
-            fontSize: "clamp(12px, 1.5vw, 14px)",
-            color: "#b07a7d",
-            margin: "30px 0 0 0",
-          }}
-        >
-          Real gospel girlie you gotta love it
-        </p>
+        style={{
+          fontFamily: "'Georgia', serif",
+          fontStyle: "italic",
+          fontSize: "clamp(12px, 1.5vw, 14px)",
+          color: "#b07a7d",
+          margin: "30px 0 0 0",
+        }}
+      >
+        Real gospel girlie you gotta love it
+      </p>
     </section>
   );
 }
