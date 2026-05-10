@@ -63,7 +63,7 @@ const loves = [
     title: "Skincare",
     description: "All the skincare but somehow still breaks out more than me",
     emoji: "✨",
-    image: "https://clothingphotographystudio.com/wp-content/uploads/2024/07/Clothing_and_Product_Photography_Studio_The_Psychology_of_White_Backgrounds_in_Beauty_Photography_-1200x675.jpg",
+    image: "https://i0.wp.com/buybetter.ng/wp-content/uploads/2024/09/Untitled-design-optimized.png?fit=480%2C257&ssl=1",
   },
 ];
 
