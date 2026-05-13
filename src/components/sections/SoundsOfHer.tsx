@@ -314,6 +314,7 @@ export default function SoundsOfHer() {
             autoplay: 1,
             start: song.startTime || 0,
             controls: 0,
+            playsinline: 1,
           },
           events: {
             onReady: (e: any) => e.target.playVideo(),
@@ -348,7 +349,17 @@ export default function SoundsOfHer() {
       }}
     >
       {/* Hidden YT player mount point */}
-      <div id={playerDivId} style={{ display: "none" }} />
+      <div
+        id={playerDivId}
+        style={{
+          position: "absolute",
+          width: 0,
+          height: 0,
+          overflow: "hidden",
+          opacity: 0,
+          pointerEvents: "none",
+        }}
+      />
 
       {/* Faint background rings */}
       {[280, 420, 560].map((size, i) => (
